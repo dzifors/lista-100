@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Aktualności{% endblock title %}
+
+{% block content %}
+
+<div class="article-list">
+{% for article in articles %}
+  <div class="article">
+    <h2 class="article-title">{{ article[1] }}</h2>
+    <span>{{ article[2] | safe }}</span>
+    <a href="/aktualnosci/{{ article[0] }}" class="article-button">Czytaj więcej &gt;</a>
+  </div>
+{% endfor %}
+</div>
+
+{% endblock content %}

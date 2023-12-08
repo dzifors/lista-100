@@ -1,0 +1,6 @@
+fastapi
+databases[mysql]
+uvicorn
+python-dotenv
+jinja2
+Markdown

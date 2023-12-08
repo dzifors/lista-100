@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article[1] }}{% endblock %}
+
+{% block content %}
+  <a href="/aktualnosci" class="article-button">&lt; Wróć</a>
+  {{ article[2] | safe }}
+{% endblock %}
