@@ -13,6 +13,7 @@ class Article(BaseModel):
 
 async def get_article(id: int):
     res = await db.fetch_one("SELECT * FROM articles WHERE id = :id", {"id": id})
+    print(res)
 
     return res
 

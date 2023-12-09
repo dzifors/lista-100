@@ -4,5 +4,6 @@
 
 {% block content %}
   <a href="/aktualnosci" class="article-button">&lt; Wróć</a>
-  {{ article[2] | safe }}
+  <h1 class="article-title">{{ article[1] }}</h1>
+  <p>{{ article[2] | safe }}</p>
 {% endblock %}

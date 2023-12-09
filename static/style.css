@@ -42,6 +42,10 @@ header > nav > a:hover {
   margin: 2rem auto;
 }
 
+.page-header {
+  text-align: center;
+}
+
 .article {
   border: 1px solid hsla(var(--base), 50%, 85%, 50%);
   border-radius: 0.75rem;
@@ -58,7 +62,7 @@ header > nav > a:hover {
 }
 
 .article-title {
-  font-size: 175%;
+  font-size: 200%;
   font-weight: 900;
 }
 
