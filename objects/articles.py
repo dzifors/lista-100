@@ -8,6 +8,7 @@ class Article(BaseModel):
     id: int
     title: str
     content: str
+    image: str
     publish_date: datetime
 
 

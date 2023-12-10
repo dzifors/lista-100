@@ -8,3 +8,7 @@ def render_template(template, request, **params):
     return templates.TemplateResponse(
         template, {"request": request, "globals": settings, **params}
     )
+
+
+def flash_login(request, message, type):
+    return render_template("admin/auth.html", request, flash=message, flash_type=type)
