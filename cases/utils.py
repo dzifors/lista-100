@@ -11,4 +11,4 @@ def render_template(template, request, **params):
 
 
 def flash_login(request, message, type):
-    return render_template("admin/auth.html", request, flash=message, flash_type=type)
+    return render_template("admin/login.html", request, flash=message, flash_type=type)
