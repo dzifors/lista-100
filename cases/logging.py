@@ -37,14 +37,19 @@ def get_current_timestamp() -> str:
     return f"{datetime.now(tz=TIMEZONE):{format}}"
 
 
-def log(message: str, color: Optional[Colors] = None):
+def print_color(message: str, color: Optional[Colors] = None, end: str = "\n"):
+    print(f"{color!r}{message}{Colors.RESET!r}", end=end)
+
+
+def log(message: str, color: Optional[Colors] = None, end: str = "\n"):
     current_timestamp = get_current_timestamp()
     if color:
         print(
-            f"{Colors.GRAY!r}[{current_timestamp}] {color!r}{message}{Colors.RESET!r}"
+            f"{Colors.GRAY!r}[{current_timestamp}] {color!r}{message}{Colors.RESET!r}",
+            end=end,
         )
     else:
-        print(f"{Colors.GRAY!r}[{current_timestamp}] {Colors.RESET}{message}")
+        print(f"{Colors.GRAY!r}[{current_timestamp}] {Colors.RESET}{message}", end=end)
 
 
 TIME_MAGNITUDE_SUFFIXES = ["nsec", "µsec", "msec", "sec"]
