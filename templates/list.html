@@ -3,30 +3,33 @@
 {% block title %}{{ edition[1] }}{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <a href="/listy" class="back-button">&lt; Wróć</a>
-  <h1>{{ edition[1] }}</h1>
-  <div></div>
-</div>
-<table class="list-entries">
-  <thead>
-    <tr>
-      <th>LP.</th>
-      <th>Imię</th>
-      <th>Nazwisko</th>
-      <th>Afiliacja instytucjonalna/organizacyjna</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for person in people %}
-    <tr>
-      <td>{{ person[4] }}</td>
-      <td>{{ person[1] }}</td>
-      <td>{{ person[2] }}</td>
-      <td>{{ person[3] }}</td>
-    </tr>
-    {% endfor %}  
-  </tbody>
-</table>
-<p>* osoba zaproszona przez Lidera Cyfryzacji do Kapituły Listy 100 ze względu na wyróżniający wkład w podnoszenie umiejętności cyfrowych w Polsce.</p>
+  <div class="page-header">
+    <a href="/listy" class="back-button">&lt; Wróć</a>
+    <h1>{{ edition[1] }}</h1>
+    <div></div>
+  </div>
+  <table class="list-entries">
+    <thead>
+      <tr>
+        <th>LP.</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Afiliacja instytucjonalna/organizacyjna</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for person in people %}
+        <tr>
+          <td>{{ person[4] }}</td>
+          <td>{{ person[1] }}</td>
+          <td>{{ person[2] }}</td>
+          <td>{{ person[3] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p>
+    * osoba zaproszona przez Lidera Cyfryzacji do Kapituły Listy 100 ze względu
+    na wyróżniający wkład w podnoszenie umiejętności cyfrowych w Polsce.
+  </p>
 {% endblock %}

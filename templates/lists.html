@@ -3,18 +3,21 @@
 {% block title %}Laureaci list{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <div></div>
-  <h1>Laureaci list</h1>
-  <div></div>
-</div>
-<div class="lists">
-  {% for edition in editions %}
-    <div class="list" style="background-image: url('/static/images/listy/{{ edition[2] }}')">
-      <a href="/listy/{{ edition[0] }}">
-        <p>{{ edition[1] }}</p>
-      </a>
-    </div>
-  {% endfor %}
-</div>
+  <div class="page-header">
+    <div></div>
+    <h1>Laureaci list</h1>
+    <div></div>
+  </div>
+  <div class="lists">
+    {% for edition in editions %}
+      <div
+        class="list"
+        style="background-image: url('/static/images/list-thumbnails/{{ edition[2] }}')"
+      >
+        <a href="/listy/{{ edition[0] }}">
+          <p>{{ edition[1] }}</p>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock %}
