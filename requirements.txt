@@ -4,6 +4,10 @@ uvicorn
 python-dotenv
 jinja2
 Markdown
-passlib[bcrypt]
+bcrypt
 python-jose[cryptography]
 python-multipart
+
+pydantic
+jose
+starlette
