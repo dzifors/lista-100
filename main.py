@@ -1,29 +1,35 @@
 #!/usr/bin/env python3
 """ Lista 100 """
-from contextlib import asynccontextmanager
 import os
+from contextlib import asynccontextmanager
+from logging import WARNING
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-import uvicorn
 
 import routes
 from cases import database as db
 from cases.logging import Colors, log
 from cases.utils import render_template
+from middleware import MetricsMiddleware, PageVisitMiddleware
 
 
 @asynccontextmanager
 async def lifespan(_):
+    log("Starting up server", Colors.MAGENTA)
     try:
         await db.init_pool()
         log("Database initialized", Colors.GREEN)
     except Exception as e:
         log(f"Database initialization failed: {e}", Colors.RED)
-        os._exit(0)
+        os.error(f"Database initialization failed: {e}")
 
     log("Startup completed successfully", Colors.MAGENTA)
 
     yield
+
+    log("Shutting down server", Colors.MAGENTA)
 
     if db.database_connection.is_connected:
         await db.close_pool()
@@ -39,6 +45,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(routes.router)
 
+app.add_middleware(PageVisitMiddleware)
+app.add_middleware(MetricsMiddleware)
+
 
 @app.exception_handler(404)
 async def page_not_found(request: Request, _):
@@ -53,6 +62,7 @@ def main():
         server_header=False,
         date_header=False,
         reload=True,
+        log_level=WARNING,
     )
 
 
