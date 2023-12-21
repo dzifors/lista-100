@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from fastapi import Cookie
-from passlib.context import CryptContext
 from pydantic import BaseModel
 from jose import JWTError, jwt
+from bcrypt import gensalt, hashpw, checkpw
 
 from objects.settings import SECRET_KEY
 from objects.users import get_user
@@ -11,8 +11,6 @@ SECRET_KEY = SECRET_KEY if SECRET_KEY is not None else ""
 
 HASH_ALGORITHM = "HS256"
 TOKEN_EXPIRE_TIME = 60
-
-crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class Token(BaseModel):
@@ -25,11 +23,12 @@ class TokenData(BaseModel):
 
 
 def get_password_hash(password: str):
-    return crypt.hash(password)
+    return hashpw(password.encode(), gensalt(13))
 
 
 def verify_password(password_to_check: str, hash: str):
-    return crypt.verify(password_to_check, hash)
+    print(password_to_check, hash)
+    return checkpw(password_to_check.encode(), hash.encode())
 
 
 async def authenticate_user(email: str, password: str):
@@ -64,7 +63,7 @@ async def get_current_user(token: str = Cookie(None)):
     try:
         payload = jwt.decode(token=token, key=SECRET_KEY, algorithms=[HASH_ALGORITHM])
 
-        email: str = payload.get("current_user")
+        email = payload.get("current_user")
 
         if email is None:
             return False
