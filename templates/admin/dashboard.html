@@ -1,0 +1,31 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Panel administracyjny{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <div></div>
+    <h1>Panel administracyjny</h1>
+    <a href="/admin/logout">Wyloguj</a>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <h2>Odwiedzenia strony</h2>
+      <p>{{ page_visits }}</p>
+    </div>
+    <div class="stat">
+      <h2>Edycje</h2>
+      <p>{{ edition_count }} edycji</p>
+      <a href="/admin/editions/add" class="stat-cta">Dodaj</a>
+    </div>
+    <div class="stat">
+      <h2>Kapituła</h2>
+      <p>{{ capitule_count or "WIP" }} członków</p>
+    </div>
+    <div class="stat">
+      <h2>Galeria</h2>
+      <p>{{ gallery_count or "WIP" }} zdjęć</p>
+    </div>
+  </div>
+{% endblock %}

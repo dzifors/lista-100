@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Logowanie{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <a href="/">Powrót</a>
+    <h1>Zaloguj się</h1>
+    <div></div>
+  </div>
+  <div>
+    <form class="login-form" action="/admin/login" method="post">
+      <input type="email" name="email" placeholder="email" />
+      <input type="password" name="password" placeholder="hasło" />
+      <button type="submit">Zaloguj</button>
+      {% if flash %}
+        <p class="notification {% if flash_type != 'success' %}red{% endif %}">
+          {{ flash }}
+        </p>
+      {% endif %}
+    </form>
+  </div>
+{% endblock %}
