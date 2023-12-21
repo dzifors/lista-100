@@ -42,7 +42,7 @@ class PageVisitMiddleware(BaseHTTPMiddleware):
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint
     ) -> Response:
-        if not request["path"].startswith("/admin") or not request["path"].startswith(
+        if not request["path"].startswith("/admin") and not request["path"].startswith(
             "/static"
         ):
             visit_counter.increment()
