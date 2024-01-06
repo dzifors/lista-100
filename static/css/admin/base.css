@@ -1,49 +1,67 @@
 .login-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
 }
 
 .login-form input, .login-form button {
-  background-color: hsl(var(--base), 20%, 20%);
-  padding: 0.5rem;
-  color: white;
-  border-radius: 0.75rem;
+    background-color: hsl(var(--base), 20%, 20%);
+    padding: 0.5rem;
+    color: white;
+    border-radius: 0.75rem;
 }
 
 .notification {
-  padding: 0.5rem;
-  background-color: green;
-  border-radius: 0.75rem;
+    padding: 0.5rem;
+    background-color: green;
+    border-radius: 0.75rem;
 }
 
 .red {
-  background-color: red;
+    background-color: red;
 }
 
 .stats {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  gap: 2rem;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 2rem;
 }
 
 .stat {
-  border: 1px solid hsl(var(--base), 50%, 80%);
-  border-radius: 0.75rem;
-  padding: 0.5rem;
-  padding-bottom: 1rem;
+    border: 1px solid hsl(var(--base), 50%, 80%);
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.5rem 1rem;
 }
 
 .stat-cta {
-  background-color: #d77c1f;
-  padding: 0.5rem;
-  text-decoration: none;
-  border-radius: 0.75rem;
+    background-color: #d77c1f;
+    padding: 0.5rem;
+    text-decoration: none;
+    border-radius: 0.75rem;
 }
 
 .stat-cta:hover {
-  color: white;
-  text-decoration: underline;
+    color: white;
+    text-decoration: underline;
+}
+
+.form-button {
+    color: white;
+    text-decoration: none;
+    background-color: #d77c1f;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+}
+
+.form-button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.add-member {
+    margin-top: 1rem;
+    text-align: center;
 }
