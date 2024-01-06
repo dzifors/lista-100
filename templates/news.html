@@ -2,23 +2,28 @@
 {% block title %}Aktualności{% endblock title %}
 
 {% block content %}
-
-<div class="page-header">
-  <div></div>
-  <h1>Aktualności</h1>
-  <div></div>
-</div>
-<div class="article-list">
-{% for article in articles %}
-<div class="article">
-  <h2 class="article-title">{{ article[1] }}</h2>
-  <div class="article-content">
-    <img src="/static/images/articles/{{ article[3] }}" alt="miniaturka" height="140" width="200" />
-    <span>{{ article[2] | safe }}</span>
+  <div class="page-header">
+    <div></div>
+    <h1>Aktualności</h1>
+    <div></div>
   </div>
-  <a href="/aktualnosci/{{ article[0] }}" class="article-cta">Czytaj więcej &gt;</a>
-</div>
-{% endfor %}
-</div>
-
+  <div class="article-list">
+    {% for article in articles %}
+      <div class="article">
+        <h2 class="article-title">{{ article[1] }}</h2>
+        <div class="article-content">
+          <img
+            src="/static/images/articles/{{ article[3] }}"
+            alt="miniaturka"
+            height="140"
+            width="200"
+          />
+          <span>{{ article[2] | safe }}</span>
+        </div>
+        <a href="/aktualnosci/{{ article[0] }}" class="article-cta"
+          >Czytaj więcej &gt;</a
+        >
+      </div>
+    {% endfor %}
+  </div>
 {% endblock content %}
