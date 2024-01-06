@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
-from fastapi import Cookie
-from pydantic import BaseModel
-from jose import JWTError, jwt
+
 from bcrypt import gensalt, hashpw, checkpw
+from fastapi import Cookie
+from jose import JWTError, jwt
+from pydantic import BaseModel
 
 from objects.settings import SECRET_KEY
 from objects.users import get_user
@@ -26,9 +27,8 @@ def get_password_hash(password: str):
     return hashpw(password.encode(), gensalt(13))
 
 
-def verify_password(password_to_check: str, hash: str):
-    print(password_to_check, hash)
-    return checkpw(password_to_check.encode(), hash.encode())
+def verify_password(password_to_check: str, password_hash: str):
+    return checkpw(password_to_check.encode(), password_hash.encode())
 
 
 async def authenticate_user(email: str, password: str):
