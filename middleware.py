@@ -24,12 +24,11 @@ class MetricsMiddleware(BaseHTTPMiddleware):
         else:
             color = Colors.RED
 
-        try:
-            url = f"{request.headers['host']}{request['path']}"
-        except KeyError:
-            url = request["path"]
-
-        log(f"[{request['method']}] {response.status_code} {url}", color, end=" | ")
+        log(
+            f"[{request['method']}] {response.status_code} {request['path']}",
+            color,
+            end=" | ",
+        )
 
         print_color(f"Request took: {format_time_magnitude(time_elapsed)}", Colors.BLUE)
 
