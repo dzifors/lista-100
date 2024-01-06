@@ -1,8 +1,15 @@
-import csv
 from datetime import datetime, timedelta
-from typing import Annotated
 
-from fastapi import APIRouter, Depends, Form, HTTPException, Request, status, File
+from PIL import Image
+from fastapi import (
+    APIRouter,
+    Depends,
+    Form,
+    HTTPException,
+    Request,
+    status,
+    UploadFile,
+)
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from markdown import markdown
@@ -14,14 +21,18 @@ from cases.auth import (
     create_access_token,
     get_current_user,
 )
-from cases.utils import flash_login, render_template
+from cases.utils import flash_login, render_template, flash
 from objects.articles import get_article, get_articles
 from objects.lists import (
-    fill_list,
     get_edition,
     get_editions,
     get_list,
     get_edition_count,
+    create_edition,
+    SortingOptions,
+    get_capitule,
+    get_capitule_count,
+    delete_edition,
 )
 from objects.users import User, logout, update_last_login
 from state import visit_counter
@@ -53,9 +64,7 @@ async def article_page(request: Request, article_id: int):
     article = await get_article(article_id)
 
     if not article:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Nie znaleziono wpisu"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
     article = (article[0], article[1], markdown(article[2]), article[3])
 
@@ -70,12 +79,14 @@ async def gallery_page(request: Request):
 @router.get("/kapitula")
 @router.get("/sklad")
 async def capitule_page(request: Request):
-    return render_template("capitule.html", request)
+    capitule = await get_capitule()
+
+    return render_template("capitule.html", request, capitule=capitule)
 
 
 @router.get("/listy")
 async def lists_page(request: Request):
-    editions = await get_editions()
+    editions = await get_editions(sort=SortingOptions.Descending)
 
     return render_template("lists.html", request, editions=editions)
 
@@ -83,15 +94,14 @@ async def lists_page(request: Request):
 @router.get("/listy/{edition_id}")
 async def list_page(request: Request, edition_id: int):
     people = await get_list(edition_id)
-    edition_id = await get_edition(edition_id)
+    edition = await get_edition(edition_id)
 
-    if not list or not edition_id:
+    if not people or not edition:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Nie znaleziono list-thumbnails",
         )
 
-    return render_template("list.html", request, people=people, edition=edition_id)
+    return render_template("list.html", request, people=people, edition=edition)
 
 
 @router.get("/logotypy")
@@ -108,12 +118,14 @@ async def admin_page(request: Request, current_user: User = Depends(get_current_
         return RedirectResponse("admin/login")
 
     edition_count = await get_edition_count()
+    capitule_count = await get_capitule_count()
 
     return render_template(
         "admin/dashboard.html",
         request,
         page_visits=visit_counter.counter,
         edition_count=edition_count,
+        capitule_count=capitule_count,
     )
 
 
@@ -160,7 +172,8 @@ async def logout_user(request: Request, current_user: User = Depends(get_current
 
 @router.get("/admin/editions/add")
 async def editions_add(
-    request: Request, current_user: User = Depends(get_current_user)
+    request: Request,
+    current_user: User = Depends(get_current_user),
 ):
     if not current_user:
         return flash_login(request, "Nie jesteś zalogowany", "error")
@@ -168,26 +181,119 @@ async def editions_add(
     return render_template("admin/editions/add.html", request)
 
 
-@router.post("/api/list/{edition_id}/tsv")
-async def post_list(
+@router.get("/admin/editions")
+async def editions_edit(
+    request: Request, current_user: User = Depends(get_current_user)
+):
+    if not current_user:
+        return flash_login(request, "Nie jesteś zalogowany", "error")
+
+    editions = await get_editions()
+
+    return render_template("admin/editions/dashboard.html", request, editions=editions)
+
+
+@router.get("/admin/editions/{edition_id}")
+async def edition_edit(
+    request: Request, edition_id: int, current_user: User = Depends(get_current_user)
+):
+    if not current_user:
+        return flash_login(request, "Nie jesteś zalogowany", "error")
+
+    people = await get_list(edition_id)
+    edition = await get_edition(edition_id)
+
+    return render_template(
+        "admin/editions/edit.html", request, people=people, edition=edition
+    )
+
+
+@router.get("/admin/editions/{edition_id}/members/add")
+async def add_edition_member(
+    request: Request, edition_id: int, current_user: User = Depends(get_current_user)
+):
+    if not current_user:
+        return flash_login(request, "Nie jesteś zalogowany", "error")
+
+    edition = await get_edition(edition_id)
+
+    return render_template("admin/editions/members/add.html", request, edition=edition)
+
+
+# API
+
+
+@router.post("/api/editions/add")
+async def post_editions_add(
     request: Request,
-    tsv_file: Annotated[bytes, File()],
-    edition_id: int,
+    thumbnail: UploadFile | None = None,
+    edition_name: str = Form(),
     current_user: User = Depends(get_current_user),
 ):
     if not current_user:
-        return flash_login(
-            request, "Nie jesteś zalogowany. Zaloguj się ponownie", "error"
-        )
+        return flash_login(request, "Nie jesteś zalogowany", "error")
 
-    reader = csv.reader(tsv_file.decode().splitlines(), delimiter="\t")
+    edition_id = await create_edition(edition_name)
 
-    lines = []
+    if thumbnail is not None:
+        if thumbnail.file.read() != b"":
+            thumbnail_image = Image.open(thumbnail.file)
+            thumbnail_image.save(
+                f"static/images/list-thumbnails/{edition_id}.png",
+            )
 
-    for line in reader:
-        lines.append(line)
+    return flash("admin/editions/add.html", request, "Dodano pomyślnie", "success")
 
-    # print(lines)
-    print(await fill_list(edition_id, lines))
 
-    return lines
+@router.get("/api/editions/delete/{edition_id}")
+async def editions_delete(
+    request: Request, edition_id: int, current_user: User = Depends(get_current_user)
+):
+    if not current_user:
+        return flash_login(request, "Nie jesteś zalogowany", "error")
+
+    await delete_edition(edition_id)
+
+    editions = await get_editions()
+
+    return flash(
+        "admin/editions/edit.html",
+        request,
+        "Usunięto pomyślnie",
+        "success",
+        editions=editions,
+    )
+
+
+@router.post("/api/editions/{edition_id}/members")
+async def editions_add_member(
+    request: Request, edition_id: int, current_user: User = Depends(get_current_user)
+):
+    if not current_user:
+        return flash_login(request, "Nie jesteś zalogowany", "error")
+
+    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED)
+
+
+# @router.post("/api/list/{edition_id}/tsv")
+# async def post_list(
+#     request: Request,
+#     tsv_file: UploadFile,
+#     edition_id: int,
+#     current_user: User = Depends(get_current_user),
+# ):
+#     if not current_user:
+#         return flash_login(request, "Nie jesteś zalogowany", "error")
+#
+#     tsv = await tsv_file.read()
+#     reader = csv.reader(tsv.splitlines(), delimiter="\t")
+#
+#     lines = []
+#
+#     for line in reader:
+#         lines.append(line)
+#
+#     # print(lines)
+#     print(await fill_list(edition_id, lines))
+#
+#     return lines
