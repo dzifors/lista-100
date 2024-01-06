@@ -3,16 +3,16 @@
 {% block title %}{{ article[1] }}{% endblock %}
 
 {% block styles %}
-<link href="/static/css/article.css" rel="stylesheet" />
+  <link href="/static/css/article.css" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <a href="/aktualnosci">&lt; Wróć</a>
-  <h1 class="article-title">{{ article[1] }}</h1>
-  <div></div>
-</div>
-<div class="article-view">
-  <p>{{ article[2] | safe }}</p>
-</div>
+  <div class="page-header">
+    <a href="/aktualnosci">&lt; Wróć</a>
+    <h1 class="article-title">{{ article[1] }}</h1>
+    <div></div>
+  </div>
+  <div class="article-view">
+    <p>{{ article[2] | safe }}</p>
+  </div>
 {% endblock %}
