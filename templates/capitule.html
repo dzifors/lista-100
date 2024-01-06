@@ -10,32 +10,8 @@
   </div>
   <p>Oto skład Kapituły Listy 100 za 2023 rok:</p>
   <ul>
-    <li>Agnieszka Aleksiejczuk</li>
-
-    <li>Iwona Brzózka-Złotnicka</li>
-
-    <li>Beata Chodacka</li>
-
-    <li>Tomasz Komorowski</li>
-
-    <li>Artur Krawczyk</li>
-
-    <li>Ewa Krupa</li>
-
-    <li>Anna Beata Kwiatkowska</li>
-
-    <li>Rafał Lew-Starowicz</li>
-
-    <li>Tomasz Łukawski</li>
-
-    <li>Artur Marcinkowski</li>
-
-    <li>Włodzimierz Marciński - przewodniczący</li>
-
-    <li>Piotr Mieczkowski</li>
-
-    <li>Jolanta Okuniewska</li>
-
-    <li>Jacek Wojnarowski - sekretarz</li>
+    {% for person in capitule %}
+      <li>{{ person[1] }}</li>
+    {% endfor %}
   </ul>
 {% endblock %}
