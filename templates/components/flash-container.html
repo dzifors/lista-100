@@ -1,0 +1,5 @@
+{% if flash %}
+  <p class="notification {% if flash_type != 'success' %}red{% endif %}">
+    {{ flash }}
+  </p>
+{% endif %}
