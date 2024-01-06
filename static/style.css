@@ -202,3 +202,9 @@ footer {
     padding: 0.5rem;
     text-align: center;
 }
+
+
+.no-borders {
+    border-left: none;
+    border-right: none
+}
