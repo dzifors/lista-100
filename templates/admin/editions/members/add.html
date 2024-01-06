@@ -1,0 +1,19 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ edition[1] }} - Dodawanie członka{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <a href="/admin/editions/{{ edition[0] }}">&lt; Wróć</a>
+    <h1>{{ edition[1] }} - Dodawanie członka</h1>
+    <div></div>
+  </div>
+  <form action="/api/editions/{{ edition[0] }}/members" method="post">
+    <label for="lp">LP.</label>
+    <input id="lp" />
+    <label for="first-name">Imię</label>
+    <input id="first-name" name="name" />
+    <label for="last-name">Nazwisko</label>
+    <input id="last-name" name="last-name" />
+  </form>
+{% endblock %}

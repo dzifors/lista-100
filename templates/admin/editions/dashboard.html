@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Edycje{% endblock %}
+
+{% block content %}
+  {% include "components/flash-container.html" %}
+  <div class="page-header">
+    <a href="/admin">&lt; Wróć</a>
+    <h1>Edycje</h1>
+    {#    <div></div>#}
+    <a href="/admin/editions/add">Dodaj</a>
+  </div>
+  <table class="list-entries">
+    <thead>
+      <tr>
+        <th>LP</th>
+        <th>Nazwa listy</th>
+        <th class="no-borders"></th>
+        <th class="no-borders"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for edition in editions %}
+        <tr>
+          <td>{{ edition[0] }}</td>
+          <td>{{ edition[1] }}</td>
+          <td class="no-borders">
+            <a href="/admin/editions/{{ edition[0] }}">Edytuj</a>
+          </td>
+          <td><a href="/api/editions/delete/{{ edition[0] }}">Usuń</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

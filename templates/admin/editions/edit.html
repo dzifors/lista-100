@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Edytowanie - {{ edition }}{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <a href="/admin/editions">&lt; Wróć</a>
+    <h1>Edycja - {{ edition[1] }}</h1>
+    <a href="/admin/editions/{{ edition[0] }}/rename">Zmień nazwę</a>
+  </div>
+  <table class="list-entries">
+    <thead>
+      <tr>
+        <th>LP.</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Afiliacja instytucjonalna/organizacyjna</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for person in people %}
+        <tr>
+          <td>{{ person[4] }}</td>
+          <td>{{ person[1] }}</td>
+          <td>{{ person[2] }}</td>
+          <td>{{ person[3] }}</td>
+          <td>
+            <a href="/admin/editions/{{ edition[0] }}/members/{{ person[0] }}">
+              Edytuj
+            </a>
+          </td>
+          <td>
+            <a
+              href="/admin/editions/{{ edition[0] }}/members/{{ person[0] }}/delete"
+            >
+              Usuń
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a class="add-member" href="/admin/editions/{{ edition[0] }}/members/add">
+    Dodaj członka
+  </a>
+{% endblock %}

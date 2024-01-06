@@ -3,9 +3,38 @@
 {% block title %}Dodawanie edycji{% endblock %}
 
 {% block content %}
+  {% if flash %}
+    <p class="notification {% if flash_type != 'success' %}red{% endif %}">
+      {{ flash }}
+    </p>
+  {% endif %}
   <div class="page-header">
     <a href="/admin">&lt; Wróć</a>
     <h1>Dodawanie edycji</h1>
     <div></div>
+  </div>
+  <div>
+    <form
+      method="post"
+      action="/api/editions/add"
+      enctype="multipart/form-data"
+      class="login-form"
+      autocomplete="off"
+    >
+      {# TODO: Turn off autocomplete in this input *somehow* #}
+      <label for="edition_name">Nazwa edycji</label>
+      <input
+        name="edition_name"
+        id="edition_name"
+        required="required"
+        autocomplete="off"
+        aria-autocomplete="none"
+      />
+
+      <label for="thumbnail">Miniaturka edycji</label>
+      <input type="file" name="thumbnail" id="thumbnail" />
+
+      <button class="form-button" type="submit">Stwórz</button>
+    </form>
   </div>
 {% endblock %}
