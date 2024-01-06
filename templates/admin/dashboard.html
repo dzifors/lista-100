@@ -17,15 +17,16 @@
     <div class="stat">
       <h2>Edycje</h2>
       <p>{{ edition_count }} edycji</p>
-      <a href="/admin/editions/add" class="stat-cta">Dodaj</a>
+      <a href="/admin/editions" class="stat-cta">Zarządzaj</a>
     </div>
     <div class="stat">
       <h2>Kapituła</h2>
-      <p>{{ capitule_count or "WIP" }} członków</p>
+      <p>{{ capitule_count }} członków</p>
+      <a href="/admin/capitule" class="stat-cta">Zarządzaj</a>
     </div>
     <div class="stat">
       <h2>Galeria</h2>
-      <p>{{ gallery_count or "WIP" }} zdjęć</p>
+      <p>{{ "WIP" }} zdjęć</p>
     </div>
   </div>
 {% endblock %}
